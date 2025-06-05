@@ -15,10 +15,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Cypress install
+      - name: Setup Node.js and cache Yarn dependencies # Adicionar este passo
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Use a versão mais recente do Node.js que Cypress 14+ suporta ou a que você usa localmente
+          cache: 'yarn' # Explicitamente cachear com yarn
+
+      - name: Install project dependencies # Adicionar este passo
+        run: yarn install --frozen-lockfile # Instala as dependências do seu package.json/yarn.lock
+
+      - name: Cypress install # Este passo agora só garantirá o Cypress em si, se não foi instalado pelo yarn
         uses: cypress-io/github-action@v6
         with:
           runTests: false
+          # Como as dependências já foram instaladas com yarn, não precisamos de um 'build' ou 'start' aqui
+          # O cypress-io/github-action irá encontrar o Cypress já instalado
+
       # report machine parameters
       - run: yarn cypress info
       - run: node --version
@@ -43,13 +55,8 @@ jobs:
       options: --user 1001
     needs: install
     strategy:
-      # when one test fails, DO NOT cancel the other
-      # containers, because this will kill Cypress processes
-      # leaving Cypress Cloud hanging ...
-      # https://github.com/cypress-io/github-action/issues/48
       fail-fast: false
       matrix:
-        # run copies of the current job in parallel
         containers: [1, 2, 3, 4, 5]
     steps:
       - name: Checkout
@@ -61,6 +68,15 @@ jobs:
           name: build
           path: build
 
+      - name: Setup Node.js and restore Yarn dependencies # Restaurar cache para este job
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install project dependencies (for the runner) # Reinstalar dependências (será rápido por causa do cache)
+        run: yarn install --frozen-lockfile
+
       - name: Node info
         run: node -v
 
@@ -70,7 +86,7 @@ jobs:
       - name: "UI Tests - Chrome"
         uses: cypress-io/github-action@v6
         with:
-          build: yarn cypress info
+          # build: yarn cypress info # Não é necessário rodar build aqui, já foi feito no job install
           start: yarn start:ci
           wait-on: "http://localhost:3000"
           wait-on-timeout: 120
@@ -83,8 +99,6 @@ jobs:
         env:
           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          # Recommended: pass the GitHub token lets this action correctly
-          # determine the unique run id necessary to re-run the checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEBUG: "cypress:server:args"
 
@@ -96,13 +110,8 @@ jobs:
       options: --user 1001
     needs: install
     strategy:
-      # when one test fails, DO NOT cancel the other
-      # containers, because this will kill Cypress processes
-      # leaving Cypress Cloud hanging ...
-      # https://github.com/cypress-io/github-action/issues/48
       fail-fast: false
       matrix:
-        # run copies of the current job in parallel
         containers: [1, 2, 3, 4, 5]
     steps:
       - name: Checkout
@@ -113,6 +122,15 @@ jobs:
         with:
           name: build
           path: build
+
+      - name: Setup Node.js and restore Yarn dependencies # Restaurar cache para este job
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install project dependencies (for the runner) # Reinstalar dependências
+        run: yarn install --frozen-lockfile
 
       - name: "UI Tests - Chrome - Mobile"
         uses: cypress-io/github-action@v6
@@ -130,8 +148,6 @@ jobs:
         env:
           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          # Recommended: pass the GitHub token lets this action correctly
-          # determine the unique run id necessary to re-run the checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   ui-firefox-tests:
@@ -142,13 +158,8 @@ jobs:
       options: --user 1001
     needs: install
     strategy:
-      # when one test fails, DO NOT cancel the other
-      # containers, because this will kill Cypress processes
-      # leaving Cypress Cloud hanging ...
-      # https://github.com/cypress-io/github-action/issues/48
       fail-fast: false
       matrix:
-        # run copies of the current job in parallel
         containers: [1, 2, 3, 4, 5]
     steps:
       - name: Checkout
@@ -159,6 +170,15 @@ jobs:
         with:
           name: build
           path: build
+
+      - name: Setup Node.js and restore Yarn dependencies # Restaurar cache para este job
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install project dependencies (for the runner) # Reinstalar dependências
+        run: yarn install --frozen-lockfile
 
       - name: "UI Tests - Firefox"
         uses: cypress-io/github-action@v6
@@ -175,8 +195,6 @@ jobs:
         env:
           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          # Recommended: pass the GitHub token lets this action correctly
-          # determine the unique run id necessary to re-run the checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   ui-firefox-mobile-tests:
@@ -187,13 +205,8 @@ jobs:
       options: --user 1001
     needs: install
     strategy:
-      # when one test fails, DO NOT cancel the other
-      # containers, because this will kill Cypress processes
-      # leaving Cypress Cloud hanging ...
-      # https://github.com/cypress-io/github-action/issues/48
       fail-fast: false
       matrix:
-        # run copies of the current job in parallel
         containers: [1, 2, 3, 4, 5]
     steps:
       - name: Checkout
@@ -204,6 +217,15 @@ jobs:
         with:
           name: build
           path: build
+
+      - name: Setup Node.js and restore Yarn dependencies # Restaurar cache para este job
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install project dependencies (for the runner) # Reinstalar dependências
+        run: yarn install --frozen-lockfile
 
       - name: "UI Tests - Firefox - Mobile"
         uses: cypress-io/github-action@v6
@@ -221,6 +243,4 @@ jobs:
         env:
           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          # Recommended: pass the GitHub token lets this action correctly
-          # determine the unique run id necessary to re-run the checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
