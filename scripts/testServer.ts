@@ -8,7 +8,7 @@ const app = express();
 
 setupProxy(app);
 
-app.use('/', history() as express.RequestHandler); // LINHA CORRIGIDA
+app.use("/", history() as express.RequestHandler); // LINHA CORRIGIDA
 app.use(express.static(path.join(__dirname, "../build")));
 
 app.listen(frontendPort);
