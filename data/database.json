@@ -85,6 +85,50 @@
       "balance": 0,
       "createdAt": "2025-06-06T11:16:35.604Z",
       "modifiedAt": "2025-06-06T11:16:35.604Z"
+    },
+    {
+      "id": "tS1kdSORB",
+      "uuid": "51b74dc3-cdc8-43cf-a6e7-a9da5eb3b112",
+      "firstName": "Novo1749212718342",
+      "lastName": "Teste1749212718342",
+      "username": "usuario.1749212718342@example.com",
+      "password": "$2a$10$ouLZYtCya5s.MwGPIH7d2.rcNt9kc6kuHyWuUoZvG3zlOPjbDphNa",
+      "balance": 0,
+      "createdAt": "2025-06-06T12:25:23.592Z",
+      "modifiedAt": "2025-06-06T12:25:23.592Z"
+    },
+    {
+      "id": "nEXoRDjB7",
+      "uuid": "78fd5228-58e3-4d47-80c3-292602294ddf",
+      "firstName": "Novo1749213178523",
+      "lastName": "Teste1749213178523",
+      "username": "usuario.1749213178523@example.com",
+      "password": "$2a$10$z/zTcIOOH1deB52MvWKCFOd.n/amiG8ueHyjhhtUFol5Scvl.jXTW",
+      "balance": 0,
+      "createdAt": "2025-06-06T12:33:04.326Z",
+      "modifiedAt": "2025-06-06T12:33:04.326Z"
+    },
+    {
+      "id": "JLR3Xorr7",
+      "uuid": "19dcea8b-291f-4118-bb11-9fed81551e84",
+      "firstName": "Novo1749213236118",
+      "lastName": "Teste1749213236118",
+      "username": "usuario.1749213236118@example.com",
+      "password": "$2a$10$c4HwGtZhxJx8Dr7URxXAhODiqEhwvKvjET5XJr15ICIHwrK8XvSsG",
+      "balance": 0,
+      "createdAt": "2025-06-06T12:34:01.604Z",
+      "modifiedAt": "2025-06-06T12:34:01.604Z"
+    },
+    {
+      "id": "Tz1WsIs7W",
+      "uuid": "fab055ac-be61-4fd9-b871-0f190ee57cd1",
+      "firstName": "Novo1749213536867",
+      "lastName": "Teste1749213536867",
+      "username": "usuario.1749213536867@example.com",
+      "password": "$2a$10$I5fy.UJXSNPwzgdCAw0xSeLLb82ouT3N5n6F8MWC/i3GSFU/mrnfa",
+      "balance": 0,
+      "createdAt": "2025-06-06T12:39:07.691Z",
+      "modifiedAt": "2025-06-06T12:39:07.691Z"
     }
   ],
   "contacts": [
