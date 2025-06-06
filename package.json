@@ -147,9 +147,10 @@
     "test:unit:ci": "vitest --run",
     "build:ci": "cross-env CYPRESS_COVERAGE=true vite build",
     "start:ci": "cross-env NODE_ENV=test concurrently yarn:start:react:proxy-server yarn:start:api",
-    "start:api": "yarn tsnode --files backend/app.ts",
-    "start:api:watch": "nodemon --exec yarn tsnode --watch 'backend' backend/app.ts",
-    "start:react:proxy-server": "yarn tsnode scripts/testServer.ts"
+    "start:api": "yarn ts-node --files backend/app.ts",
+    "start:api:watch": "nodemon --exec yarn ts-node --watch 'backend' backend/app.ts",
+    "start:react:proxy-server": "yarn ts-node scripts/testServer.ts",
+    "ts-node:instrumented": "nyc --silent ts-node -P tsconfig.tsnode.json"
   },
   "lint-staged": {
     "*.{js,ts,tsx,json,md,yml}": [
