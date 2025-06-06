@@ -144,7 +144,8 @@
     "lint": "eslint && prettier --check \"**/*.{ts,js,tsx}\" \"*.{json,md,yml}\"",
     "format": "prettier --write .",
     "types": "tsc --noEmit",
-    "test:unit:ci": "vitest --run"
+    "test:unit:ci": "vitest --run",
+    "build:ci": "cross-env CYPRESS_COVERAGE=true vite build"
   },
   "lint-staged": {
     "*.{js,ts,tsx,json,md,yml}": [
