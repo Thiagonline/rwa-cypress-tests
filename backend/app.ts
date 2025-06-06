@@ -55,18 +55,21 @@ app.use(logger("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// CORRIGIDO: A configuração da sessão deve estar DENTRO do objeto passado para session()
 app.use(
+  "/",
   session({
     secret: "session secret",
     resave: false,
     saveUninitialized: false,
     unset: "destroy",
-  })
+  }) as any // A asserção 'as any' deve ser aplicada ao resultado de session(), não ao objeto de configuração
 );
-app.use(passport.initialize());
+
+app.use("/", passport.initialize() as any);
 app.use(passport.session());
 
-app.use(paginate.middleware(+process.env.PAGINATION_PAGE_SIZE!));
+app.use("/", paginate.middleware(+process.env.PAGINATION_PAGE_SIZE!) as any);
 
 /* istanbul ignore next */
 if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {

@@ -142,7 +142,8 @@
   "scripts": {
     "prepare": "husky install",
     "lint": "eslint && prettier --check \"**/*.{ts,js,tsx}\" \"*.{json,md,yml}\"",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "types": "tsc --noEmit"
   },
   "lint-staged": {
     "*.{js,ts,tsx,json,md,yml}": [
