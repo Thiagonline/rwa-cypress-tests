@@ -145,7 +145,8 @@
     "format": "prettier --write .",
     "types": "tsc --noEmit",
     "test:unit:ci": "vitest --run",
-    "build:ci": "cross-env CYPRESS_COVERAGE=true vite build"
+    "build:ci": "cross-env CYPRESS_COVERAGE=true vite build",
+    "start:ci": "cross-env NODE_ENV=test concurrently yarn:start:react:proxy-server yarn:start:api"
   },
   "lint-staged": {
     "*.{js,ts,tsx,json,md,yml}": [
