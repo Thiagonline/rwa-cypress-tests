@@ -1,3 +1,5 @@
+#!/usr/bin/env ts-node
+
 import path from "path";
 import express from "express";
 import history from "connect-history-api-fallback";
@@ -6,9 +8,16 @@ import { frontendPort } from "../src/utils/portUtils";
 
 const app = express();
 
+// Aplica o proxy (ex: para redirecionamento de /api)
 setupProxy(app);
 
-app.use("/", history() as any as express.RequestHandler); // LINHA CORRIGIDA
+// Suporte ao React Router (SPA)
+app.use("/", history() as express.RequestHandler);
+
+// Servir arquivos estáticos do build (React)
 app.use(express.static(path.join(__dirname, "../build")));
 
-app.listen(frontendPort);
+// Inicia o servidor
+app.listen(frontendPort, () => {
+  console.log(`🚀 Frontend rodando em http://localhost:${frontendPort}`);
+});

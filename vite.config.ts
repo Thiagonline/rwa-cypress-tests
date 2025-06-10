@@ -2,13 +2,15 @@ import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import eslint from "vite-plugin-eslint";
 import istanbul from "vite-plugin-istanbul";
+import path from "path";
 
-export default defineConfig(({ command, mode }) => {
-  const env = loadEnv(mode, process.cwd(), "VITE");
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
+
   return {
-    // expose all vite "VITE_*" variables as process.env.VITE_* in the browser
     define: {
-      "process.env": env,
+      // Evite sobrescrever todo process.env — use import.meta.env no código do Vite
+      "import.meta.env": env,
     },
     server: {
       port: 3000,
@@ -22,21 +24,20 @@ export default defineConfig(({ command, mode }) => {
       eslint(),
       istanbul({
         cypress: true,
-        requireEnv: true,
-        exclude: ["node_modules", "cypress", "dist"],
+        requireEnv: false,
+        exclude: ["node_modules", "cypress", "dist", "coverage"],
         forceBuildInstrument: true,
       }),
     ],
-    // to get aws amplify to work with vite
     resolve: {
-      alias: [
-        {
-          find: "./runtimeConfig",
-          replacement: "./runtimeConfig.browser", // ensures browser compatible version of AWS JS SDK is used
-        },
-      ],
+      alias: {
+        // AWS Amplify compatibility
+        "./runtimeConfig": "./runtimeConfig.browser",
+        "@": path.resolve(__dirname, "src"), // Útil para imports como '@/components/Button'
+      },
     },
     test: {
+      globals: true,
       environment: "jsdom",
       setupFiles: "./src/setup-tests.js",
       exclude: ["node_modules", "cypress", "dist"],

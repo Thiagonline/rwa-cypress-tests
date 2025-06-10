@@ -1,3 +1,5 @@
+#!/usr/bin/env ts-node
+
 import express from "express";
 import { join } from "path";
 import logger from "morgan";
@@ -22,6 +24,7 @@ import commentRoutes from "./comment-routes";
 import notificationRoutes from "./notification-routes";
 import bankTransferRoutes from "./banktransfer-routes";
 import testDataRoutes from "./testdata-routes";
+
 import { checkAuth0Jwt, verifyOktaToken, checkCognitoJwt, checkGoogleJwt } from "./helpers";
 import resolvers from "./graphql/resolvers";
 import { frontendPort, getBackendPort } from "../src/utils/portUtils";
@@ -44,18 +47,19 @@ const schemaWithResolvers = addResolversToSchema({
 
 const app = express();
 
-/* istanbul ignore next */
-// @ts-expect-error
+/* 🔍 Code coverage para Cypress */
 if (global.__coverage__) {
+  // @ts-expect-error
   require("@cypress/code-coverage/middleware/express")(app);
 }
 
+/* ✅ Middlewares */
 app.use(cors(corsOption));
 app.use(logger("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// CORRIGIDO: A configuração da sessão deve estar DENTRO do objeto passado para session()
+/* ✅ Sessões e autenticação */
 app.use(
   "/",
   session({
@@ -63,7 +67,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     unset: "destroy",
-  }) as any // A asserção 'as any' deve ser aplicada ao resultado de session(), não ao objeto de configuração
+  }) as any
 );
 
 app.use("/", passport.initialize() as any);
@@ -71,37 +75,37 @@ app.use(passport.session());
 
 app.use("/", paginate.middleware(+process.env.PAGINATION_PAGE_SIZE!) as any);
 
-/* istanbul ignore next */
+/* ✅ Rotas de dados de teste (apenas dev ou test) */
 if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {
   app.use("/testData", testDataRoutes);
 }
 
+/* ✅ Autenticação */
 app.use(auth);
 
-/* istanbul ignore if */
 if (process.env.VITE_AUTH0) {
   app.use(checkAuth0Jwt);
 }
 
-/* istanbul ignore if */
 if (process.env.VITE_OKTA) {
   app.use(verifyOktaToken);
 }
 
-/* istanbul ignore if */
 if (process.env.VITE_AWS_COGNITO) {
   app.use(checkCognitoJwt);
 }
 
-/* istanbul ignore if */
 if (process.env.VITE_GOOGLE) {
   app.use(checkGoogleJwt);
 }
 
+/* ✅ Rotas principais */
 app.get("/", (req, res) => {
   res.send("Cypress Realworld App - backend");
 });
+
 app.use("/graphql", gqlPlaygroundRoutes);
+
 app.use(
   "/graphql",
   graphqlHandler({
@@ -111,6 +115,7 @@ app.use(
     },
   })
 );
+
 app.use("/users", userRoutes);
 app.use("/contacts", contactRoutes);
 app.use("/bankAccounts", bankAccountRoutes);
@@ -120,8 +125,12 @@ app.use("/comments", commentRoutes);
 app.use("/notifications", notificationRoutes);
 app.use("/bankTransfers", bankTransferRoutes);
 
+/* ✅ Arquivos estáticos */
 app.use(express.static(join(__dirname, "../public")));
 
+/* ✅ Inicialização do servidor */
 getBackendPort().then((port) => {
-  app.listen(port);
+  app.listen(port, () => {
+    console.log(`🚀 Backend rodando em http://localhost:${port}`);
+  });
 });

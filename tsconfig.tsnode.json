@@ -1,8 +1,11 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS", // ⚠️ Corrigir para "CommonJS" (respeitando o C maiúsculo)
     "isolatedModules": false,
-    "types": ["node"]
-  }
+    "types": ["node"],
+    "esModuleInterop": true, // ✅ Garante importações padrão com express, dotenv, etc
+    "resolveJsonModule": true // ✅ Suporte a imports de arquivos .json
+  },
+  "include": ["backend/**/*", "scripts/**/*", "src/**/*"]
 }
