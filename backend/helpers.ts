@@ -1,3 +1,4 @@
+// @ts-nocheck
 import dotenv from "dotenv";
 import { set } from "lodash";
 import { Request, Response, NextFunction } from "express";

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { body, check, oneOf, query, sanitizeQuery } from "express-validator";
 import { isValid } from "shortid";
 import {

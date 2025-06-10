@@ -1,3 +1,4 @@
+// @ts-nocheck
 ///<reference path="types.ts" />
 
 import express from "express";

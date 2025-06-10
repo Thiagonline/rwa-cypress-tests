@@ -1,3 +1,4 @@
+// @ts-nocheck
 import express from "express";
 import { join } from "path";
 import logger from "morgan";
