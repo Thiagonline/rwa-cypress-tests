@@ -56,7 +56,7 @@ app.use(logger("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// CORRIGIDO: Adiciona 'as any' ao resultado da chamada do middleware
+// CORRIGIDO: A configuração da sessão deve estar DENTRO do objeto passado para session()
 app.use(
   "/",
   session({
@@ -64,13 +64,13 @@ app.use(
     resave: false,
     saveUninitialized: false,
     unset: "destroy",
-  }) as any // A asserção 'as any' aplicada ao resultado de session({})
+  }) as any // A asserção 'as any' deve ser aplicada ao resultado de session(), não ao objeto de configuração
 );
 
-app.use("/", passport.initialize() as any); // Corrigido
+app.use("/", passport.initialize() as any);
 app.use(passport.session());
 
-app.use("/", paginate.middleware(+process.env.PAGINATION_PAGE_SIZE!) as any); // Corrigido
+app.use("/", paginate.middleware(+process.env.PAGINATION_PAGE_SIZE!) as any);
 
 /* istanbul ignore next */
 if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {

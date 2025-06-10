@@ -5,5 +5,6 @@
   "compilerOptions": {
     "types": ["node"],
     "isolatedModules": false,
-  },
+    "typeRoots": ["./node_modules/@types", "./types"]
+  }
 }
