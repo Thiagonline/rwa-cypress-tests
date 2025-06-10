@@ -1,20 +1,13 @@
-import { Application } from "express";
+// CORRIGIDO: Usando 'require' para importar createProxyMiddleware
+const { createProxyMiddleware } = require("http-proxy-middleware"); // Linha 2
+require("dotenv").config();
 
-import { createProxyMiddleware } from "http-proxy-middleware";
-import { Application } from "express";
-import dotenv from "dotenv";
-
-dotenv.config();
-
-export default function setupProxy(app: Application) {
+module.exports = function (app) {
   app.use(
-    createProxyMiddleware(
-      ["/login", "/callback", "/logout", "/checkAuth", "/graphql"], // <- corrigido '/graphql'
-      {
-        target: `http://localhost:${process.env.VITE_BACKEND_PORT}`,
-        changeOrigin: true,
-        logLevel: "debug",
-      }
-    )
+    createProxyMiddleware(["/login", "/callback", "/logout", "/checkAuth", "graphql"], {
+      target: `http://localhost:${process.env.VITE_BACKEND_PORT}`,
+      changeOrigin: true,
+      logLevel: "debug",
+    })
   );
-}
+};
