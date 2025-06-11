@@ -17,12 +17,12 @@ try {
 } catch (e) {}
 
 module.exports = defineConfig({
-  projectId: "7s5okt",
+  projectId: "br1wgu",
   retries: {
     runMode: 2,
   },
   env: {
-    apiUrl: "http://localhost:3002", // Continua correto: Backend na porta 3002
+    apiUrl: "http://localhost:3004",
     mobileViewportWidthBreakpoint: 414,
     coverage: false,
     codeCoverage: {
@@ -31,23 +31,19 @@ module.exports = defineConfig({
     },
     defaultPassword: process.env.SEED_DEFAULT_USER_PASSWORD,
     paginationPageSize: process.env.PAGINATION_PAGE_SIZE,
-    // Auth0
     auth0_username: process.env.AUTH0_USERNAME,
     auth0_password: process.env.AUTH0_PASSWORD,
     auth0_domain: process.env.VITE_AUTH0_DOMAIN,
-    // Okta
     okta_username: process.env.OKTA_USERNAME,
     okta_password: process.env.OKTA_PASSWORD,
     okta_domain: process.env.VITE_OKTA_DOMAIN,
     okta_client_id: process.env.VITE_OKTA_CLIENTID,
     okta_programmatic_login: process.env.OKTA_PROGRAMMATIC_LOGIN || false,
-    // Amazon Cognito
     cognito_username: process.env.AWS_COGNITO_USERNAME,
     cognito_password: process.env.AWS_COGNITO_PASSWORD,
     cognito_domain: process.env.AWS_COGNITO_DOMAIN,
     cognito_programmatic_login: false,
     awsConfig: awsConfig.default,
-    // Google
     googleRefreshToken: process.env.GOOGLE_REFRESH_TOKEN,
     googleClientId: process.env.VITE_GOOGLE_CLIENTID,
     googleClientSecret: process.env.VITE_GOOGLE_CLIENT_SECRET,
@@ -77,7 +73,7 @@ module.exports = defineConfig({
     },
   },
   e2e: {
-    baseUrl: "http://localhost:3000", // AJUSTADO: Frontend agora na porta 3000
+    baseUrl: "http://localhost:3000",
     specPattern: "cypress/{tests,e2e}/**/*.spec.{js,jsx,ts,tsx}",
     supportFile: "cypress/support/e2e.ts",
     viewportHeight: 1000,
@@ -92,7 +88,6 @@ module.exports = defineConfig({
           const { data } = await axios.get(`${testDataApiEndpoint}/${entity}`);
           return callback(data, attrs);
         };
-
         return Array.isArray(query) ? Promise.map(query, fetchData) : fetchData(query);
       };
 

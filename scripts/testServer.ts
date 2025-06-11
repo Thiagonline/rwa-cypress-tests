@@ -7,6 +7,8 @@ import history from "connect-history-api-fallback"; // Adicione @ts-ignore
 import setupProxy from "../src/setupProxy";
 import { frontendPort } from "../src/utils/portUtils";
 
+require("dotenv").config();
+
 const app = express();
 
 setupProxy(app);

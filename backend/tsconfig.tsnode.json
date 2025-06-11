@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.json",
+  "include": ["./*/*.ts", "../src", "../models"],
+  "exclude": [],
+  "compilerOptions": {
+    "module": "ESNext", // INSERIDO
+    "moduleResolution": "NodeNext", // INSERIDO
+    "target": "ES2020", // INSERIDO
+    "esModuleInterop": true, // INSERIDO
+    "allowSyntheticDefaultImports": true, // INSERIDO
+    "resolveJsonModule": true, // INSERIDO
+    "isolatedModules": false,
+    "typeRoots": ["./node_modules/@types", "./types"]
+  }
+}
